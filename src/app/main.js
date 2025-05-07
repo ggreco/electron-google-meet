@@ -1,4 +1,4 @@
-const {app, BrowserWindow, shell} = require('electron');
+const {app, BrowserWindow, shell, session, desktopCapturer} = require('electron');
 const path = require('path')
 
 const menu = require('./menu.js');
@@ -25,9 +25,18 @@ app.on('ready', () => {
         webPreferences: {
             preload: path.join(__dirname, 'browser.js'),
             nodeIntegration: false,
-            contextIsolation: true
+            contextIsolation: true,
         }
     });
+
+    // this code enables screen sharing
+    session.defaultSession.setDisplayMediaRequestHandler((request, callback) => {
+        desktopCapturer.getSources({ types: ['screen'] }).then((sources) => {
+          // Grant access to the first screen found, this is a fallback, the system picker will be used if available
+          callback({ video: sources[0], audio: 'loopback' })
+        })
+        // use the system picker if available, otherwise the callback above
+    }, { useSystemPicker: true })
 
     let url = 'https://meet.google.com/';
     if (app.commandLine.hasSwitch('room-id')) {
@@ -47,7 +56,6 @@ app.on('ready', () => {
         event.preventDefault();
         shell.openExternal(url);
     });
-
 
     if (!app.commandLine.hasSwitch('disable-tray')) {
         tray.init(

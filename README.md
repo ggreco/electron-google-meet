@@ -1,7 +1,7 @@
 # electron-google-meet
 Google Meet Desktop application with Electron
 
-**NOTE**: this fork uses the latest electron version and enable screen sharing support.
+**NOTE**: this fork uses the latest electron version and enable screen sharing support. This fork has been tested intensively on macOS 15.
 
 ## Usage
 This application put the icon in the tray bar: if the icon is not working for you, use the option

@@ -1,6 +1,8 @@
 # electron-google-meet
 Google Meet Desktop application with Electron
 
+**NOTE**: this fork uses the latest electron version and enable screen sharing support.
+
 ## Usage
 This application put the icon in the tray bar: if the icon is not working for you, use the option
 `--disable-tray` on the command line to avoid that minimizing the main window, there is no way to

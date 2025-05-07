@@ -7,16 +7,16 @@
     "start": "electron .",
     "package-linux": "electron-packager . meet --overwrite --asar --platform=linux --arch=x64 --icon=icons/meet.png --prune=true --out=release-builds",
     "package-win": "electron-packager . meet --overwrite --asar --platform=win32 --arch=ia32 --icon=icons/meet.ico --prune=true --out=release-builds",
-    "package-mac": "electron-packager . meet --overwrite --platform=darwin --arch=x64 --icon=icons/meet.icns --prune=true --out=release-builds"
+    "package-mac": "electron-packager . meet --overwrite --platform=darwin --arch=arm64 --icon=icons/meet.icns --prune=true --out=release-builds"
   },
   "keywords": [
     "Electron",
     "Meet"
   ],
   "devDependencies": {
-    "electron": "~22.3.25"
+    "electron": "~36.1.0"
   },
   "dependencies": {
-    "electron-packager": "^17.1.1"
+    "electron-packager": "^17.1.2"
   }
 }

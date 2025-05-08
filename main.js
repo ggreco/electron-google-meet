@@ -21,11 +21,12 @@ app.on('ready', () => {
         icon: tray.getIcon(false),
         width: 1280,
         height: 800,
-        titleBarStyle: 'hidden',
+        frame: false,
+        focusable: false,
         webPreferences: {
             preload: path.join(__dirname, 'browser.js'),
             nodeIntegration: false,
-            contextIsolation: true,
+            contextIsolation: false,
         }
     });
 

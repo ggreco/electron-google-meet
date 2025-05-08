@@ -12,6 +12,18 @@ function getCamButtonElement() {
     return document.querySelector('[data-tooltip*="(ctrl + e)"]');
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+    console.log("Injecting the top bar");
+    var windowTopBar = document.createElement('div');
+    windowTopBar.style.width = "100%";
+    windowTopBar.style.height = "20px";
+    windowTopBar.style.backgroundColor = "#000";
+    windowTopBar.style.position = "absolute";
+    windowTopBar.style.top = windowTopBar.style.left = 0;
+    windowTopBar.style.webkitAppRegion = "drag";
+    document.body.appendChild(windowTopBar);
+});
+
 var micButtonElementStorage;
 function initMicObserver(event) {
     let micButtonElement = getMicButtonElement();

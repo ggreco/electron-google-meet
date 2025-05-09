@@ -1,4 +1,4 @@
-const {app, BrowserWindow, shell, session, desktopCapturer} = require('electron');
+const {app, BrowserWindow, shell, session, desktopCapturer, dialog} = require('electron');
 const path = require('path')
 
 const menu = require('./menu.js');
@@ -7,6 +7,16 @@ const tray = require('./tray.js');
 const meet = require('./meet.js');
 
 let mainWindow = null;
+let queuedUrl = null;
+
+if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+      app.setAsDefaultProtocolClient('x-url2app', process.execPath, [path.resolve(process.argv[1])]);
+    }
+} else {
+    app.setAsDefaultProtocolClient('x-url2app');
+}
+
 
 if (app.commandLine.hasSwitch('help')) {
     console.log("Usage:");
@@ -16,7 +26,7 @@ if (app.commandLine.hasSwitch('help')) {
     process.exit(0);
 }
 
-app.on('ready', () => {
+app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
         icon: tray.getIcon(false),
         width: 1280,
@@ -39,11 +49,10 @@ app.on('ready', () => {
         // use the system picker if available, otherwise the callback above
     }, { useSystemPicker: true })
 
-    let url = 'https://meet.google.com/';
+    let url = queuedUrl ?? 'https://meet.google.com/';
     if (app.commandLine.hasSwitch('room-id')) {
         url = 'https://meet.google.com/' + app.commandLine.getSwitchValue('room-id')
     }
-
     menu.init(meet);
     mainWindow.loadURL(url);
     mainWindow.setTouchBar(touchbar.init(meet));
@@ -72,3 +81,16 @@ app.on('ready', () => {
         );
     }
 });
+
+// Handle the protocol. In this case, we choose to show an Error Box.
+app.on('open-url', (event, sourceUrl) => {
+    let url = sourceUrl.split('://')[1];
+    url = url.replace("https//", "https://");
+    if (mainWindow) {
+        mainWindow.loadURL(url);
+        mainWindow.show();
+        mainWindow.focus();
+    } else {
+        queuedUrl = url;
+    }
+})

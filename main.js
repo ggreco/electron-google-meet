@@ -32,7 +32,6 @@ app.whenReady().then(() => {
         width: 1280,
         height: 800,
         frame: false,
-        focusable: false,
         webPreferences: {
             preload: path.join(__dirname, 'browser.js'),
             nodeIntegration: false,
